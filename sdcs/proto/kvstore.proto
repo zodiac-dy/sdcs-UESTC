@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+package kvstore; // 定义 proto 包名，避免与其他 proto 冲突
+
+// 引入 Google 官方提供的 Any 类型
+// Any 可以存储任意 protobuf 消息，适合做通用的 value 容器
+import "google/protobuf/any.proto";
+
+
+// ---------------------------
+// 服务定义：KVStore
+// ---------------------------
+// 提供分布式 Key-Value 存储接口，支持：
+//   1. Set    写入 key-value
+//   2. Get    读取 key 对应的值
+//   3. Remove 删除指定 key
+service KVStore {
+    // 写入键值对
+    rpc Set(SetRequest) returns (SetResponse);
+
+    // 获取键对应的值
+    rpc Get(GetRequest) returns (GetResponse);
+
+    // 删除键
+    rpc Remove(RemoveRequest) returns (RemoveResponse);
+}
+
+
+// ---------------------------
+// 消息定义：Set
+// ---------------------------
+
+// Set 请求
+message SetRequest {
+    string key = 1;                  // 键（唯一标识）
+    google.protobuf.Any value = 2;   // 值（支持任意 protobuf 类型）
+}
+
+// Set 响应
+message SetResponse {
+    bool success = 1;                // 是否写入成功
+}
+
+
+// ---------------------------
+// 消息定义：Get
+// ---------------------------
+
+// Get 请求
+message GetRequest {
+    string key = 1;                  // 要查询的键
+}
+
+// Get 响应
+message GetResponse {
+    google.protobuf.Any value = 1;   // 查询到的值（任意类型）
+}
+
+
+// ---------------------------
+// 消息定义：Remove
+// ---------------------------
+
+// Remove 请求
+message RemoveRequest {
+    string key = 1;                  // 要删除的键
+}
+
+// Remove 响应
+message RemoveResponse {
+    bool success = 1;                // 是否删除成功
+}

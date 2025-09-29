@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  cache1:
+    build: .
+    environment:
+      - Total_servers=3
+      - Server_id=1
+    container_name: cache1
+    ports:
+      - "9527:8080"
+
+  cache2:
+    build: .
+    environment:
+      - Total_servers=3
+      - Server_id=2
+    container_name: cache2
+    ports:
+      - "9528:8080"
+  
+  cache3:
+    build: .
+    environment:
+      - Total_servers=3
+      - Server_id=3
+    container_name: cache3
+    ports:
+      - "9529:8080" 
